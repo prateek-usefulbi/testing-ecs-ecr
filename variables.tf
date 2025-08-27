@@ -45,3 +45,17 @@ variable "private_subnet_cidrs" {
   type        = list(string)
   default     = ["10.99.197.0/24", "10.99.198.0/24", "10.99.199.0/24"]
 }
+
+# ECR variables
+variable "repo_name" {
+  description = "Name of the ECR repository (must already exist)"
+  type        = string
+  default     = "genai-studio"
+}
+ # ECS variables
+variable "image_tag" {
+  description = "Tag of the Docker image"
+  type        = string
+  default     = "latest"
+}
+ 

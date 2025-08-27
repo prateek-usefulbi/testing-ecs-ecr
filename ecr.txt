@@ -1,0 +1,23 @@
+$Env:REGION    = "ap-south-1"
+$Env:ACCOUNT   = "025066239748"
+$Env:REPO_NAME = "exelixis-ai-platform-fe"
+$Env:IMAGE_TAG = (Get-Date -Format "yyyyMMdd-HHmmss")
+$Env:ECR_URI   = "$Env:ACCOUNT.dkr.ecr.$Env:REGION.amazonaws.com/$Env:REPO_NAME"
+ 
+ 
+aws ecr get-login-password --region $Env:REGION | docker login --username AWS --password-stdin "$Env:ACCOUNT.dkr.ecr.$Env:REGION.amazonaws.com"
+
+ 
+ 
+ 
+#Create repo
+aws ecr create-repository --repository-name $Env:REPO_NAME --region $Env:REGION
+
+# Build
+docker build -t "${Env:REPO_NAME}:${Env:IMAGE_TAG}" .
+ 
+# Tag
+docker tag "${Env:REPO_NAME}:${Env:IMAGE_TAG}" "${Env:ECR_URI}:${Env:IMAGE_TAG}"
+ 
+# Push
+docker push "${Env:ECR_URI}:${Env:IMAGE_TAG}"
